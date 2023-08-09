@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!--        Here create a category of material request module-->
+        <record model="ir.module.category"
+                id="material_request_module_management">
+            <field name="name">Material Request</field>
+            <field name="description">
+                User access levels for Material Request module
+            </field>
+            <field name="sequence">10</field>
+        </record>
+        <!-- Security groups -->
+        <record id="material_user_access" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id"
+                   ref="material_request_module_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="material_manager_access" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id"
+                   ref="material_request_module_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="material_head_access" model="res.groups">
+            <field name="name">Head</field>
+            <field name="category_id"
+                   ref="material_request_module_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+</odoo>

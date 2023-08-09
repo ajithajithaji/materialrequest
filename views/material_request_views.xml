@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!--        Here we can use the tree view for the material
+        request model-->
+        <record id="material_request_tree_view" model="ir.ui.view">
+            <field name="name">material.request.tree.view</field>
+            <field name="model">material.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="request_date"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state=='confirm'"
+                           decoration-warning="state=='submitted'"
+                           decoration-info="state=='draft'"
+                           decoration-danger="state=='rejected'"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Define form views of material request model -->
+        <record id="material_request_form_view" model="ir.ui.view">
+            <field name="name">material.request.form.view</field>
+            <field name="model">material.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_submit" string="Submit"
+                                type="object" class="oe_highlight"
+                                groups="material_request.material_user_access"
+                                attrs="{'invisible':['|','|','|','|',
+                                ('state','=','submitted'),
+                                ('state','=','manager_approved'),
+                                ('state','=','head_approved'),
+                                ('state','=','confirm'),
+                                ('state','=','rejected')]}"/>
+                        <button name="action_manager_approve"
+                                string="Manager Approve" type="object"
+                                class="oe_highlight"
+                                groups="material_request.material_manager_access"
+                                attrs="{'invisible':['|','|','|','|',
+                                ('state','=','draft'),
+                                ('state','=','manager_approved'),
+                                ('state','=','head_approved'),
+                                ('state','=','confirm'),
+                                ('state','=','rejected')]}"/>
+                        <button name="action_head_approve" string="Head Approve"
+                                type="object" class="oe_highlight"
+                                groups="material_request.material_head_access"
+                                attrs="{'invisible':['|','|','|','|',
+                                ('state','=','draft'),
+                                ('state','=','submitted'),
+                                ('state','=','head_approved'),
+                                ('state','=','confirm'),
+                                ('state','=','rejected')]}"/>
+                        <button name="action_reject" string="Rejected"
+                                type="object" class="oe_highlight"
+                                groups="material_request.material_head_access"
+                                attrs="{'invisible':['|','|','|','|',
+                                ('state','=','draft'),
+                                ('state','=','submitted'),
+                                ('state','=','head_approved'),
+                                ('state','=','confirm'),
+                                ('state','=','rejected')]}"/>
+                        <button name="action_confirm" string="Confirm"
+                                type="object"
+                                groups="material_request.material_user_access"
+                                attrs="{'invisible':['|','|','|','|',
+                                ('state','=','draft'),
+                                ('state','=','submitted'),
+                                ('state','=','manager_approved'),
+                                ('state','=','confirm'),
+                                ('state','=','rejected')]}"/>
+                        <button name="action_draft" string="Reset To Draft"
+                                type="object"
+                                attrs="{'invisible':['|','|','|','|','|',
+                                ('state','=','draft'),
+                                ('state','=','manager_approved'),
+                                ('state','=','head_approved'),
+                                ('state','=','confirm'),
+                                ('state','=','rejected'),
+                                ('state','=','submitted')]}"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,submitted,
+                               manager_approved,head_approved,confirm"
+                               style="margin-right:10px"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" position="inside">
+                            <button class="oe_stat_button" type="object"
+                                    name="get_purchase_orders"
+                                    icon="fa-credit-card" string="Purchased"
+                                    attrs="{'invisible':
+                                    [('purchase_count','=',0)]}">
+                                <field name="purchase_count" invisible="1"/>
+                            </button>
+                            <button class="oe_stat_button" type="object"
+                                    name="get_internal_transfer"
+                                    icon="fa-truck" string="Transfers"
+                                    attrs="{'invisible':
+                                    [('transfer_count','=',0)]}">
+                                <field name="transfer_count" invisible="1"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="name"
+                                   style="margin-right:1250px;font-size:50px"/>
+
+                            <group>
+                                <field name="employee_id"
+                                       attrs="{'readonly':[['state','in',
+                                       ['submitted','manager_approved',
+                                       'head_approved','confirm',
+                                       'rejected']]]}"/>
+                                <field name="request_date"
+                                       attrs="{'readonly':[['state','in',
+                                       ['submitted','manager_approved',
+                                       'head_approved','confirm',
+                                       'rejected']]]}"/>
+                                <field name="state" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="product_lines_ids"
+                                       widget="one2many_list">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="quantity"/>
+                                        <field name="source_type"/>
+                                        <field name="location_from_id"
+                                               attrs="{'invisible':
+                                               [('source_type','=','purchase')],
+                                               'readonly':
+                                                [('source_type', '=',
+                                                 'purchase')]}"/>
+                                        <field name="location_to_id"
+                                               attrs="{'invisible':
+                                               [('source_type','=',
+                                               'purchase')],
+                                               'readonly':
+                                               [('source_type', '=',
+                                               'purchase')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!--material request Action  -->
+        <record id="material_requests_action" model="ir.actions.act_window">
+            <field name="name">Material Requests</field>
+            <field name="res_model">material.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+        </record>
+        <!--        Menu has added under the employee module-->
+        <menuitem id="material_requests_menu" name="Material Requests"
+                  parent="hr.menu_config_employee" sequence="40"
+                  action="material_requests_action"/>
+
+    </data>
+</odoo>
+
+

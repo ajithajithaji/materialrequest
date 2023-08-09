@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <!--PRODUCT CATEGORY DEMO DATA -->
+        <record id="product_category_test" model="product.category">
+            <field name="parent_id" ref="product.product_category_all"/>
+            <field name="name">All</field>
+        </record>
+        <!--PRODUCT DEMO DATA -->
+        <record id="product_test" model="product.product">
+            <field name="name">Test Product</field>
+            <field name="categ_id" ref="product_category_test"/>
+            <field name="standard_price">14</field>
+            <field name="list_price">20</field>
+            <field name="type">product</field>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="description">This is a test product</field>
+        </record>
+        <record id="product_test1" model="product.product">
+            <field name="name">Acoustic Bloc Screens</field>
+            <field name="categ_id" ref="product_category_test"/>
+            <field name="standard_price">295.00</field>
+            <field name="list_price">20</field>
+            <field name="type">product</field>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="description">This is a test product</field>
+        </record>
+        <record id="product_test2" model="product.product">
+            <field name="name">Bacon Burger</field>
+            <field name="categ_id" ref="product_category_test"/>
+            <field name="standard_price">7.50</field>
+            <field name="list_price">20</field>
+            <field name="type">product</field>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="description">This is a test product</field>
+        </record>
+         <record id="product_test3" model="product.product">
+            <field name="name">Bolt</field>
+            <field name="categ_id" ref="product_category_test"/>
+            <field name="standard_price">0.00</field>
+            <field name="list_price">0.50</field>
+            <field name="type">product</field>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="description">This is a test product</field>
+        </record>
+
+    </data>
+</odoo>
